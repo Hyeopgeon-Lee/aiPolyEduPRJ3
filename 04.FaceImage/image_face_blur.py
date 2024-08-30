@@ -21,7 +21,7 @@ faces = face_cascade.detectMultiScale(gray, 1.1, 2, 0, (100, 100))
 facesCnt = len(faces)
 
 # 인식된 얼굴의 수 출력
-print(len(faces))
+print(f"검출된 얼굴 수: {len(faces)}")  # 검출된 얼굴의 수를 출력
 
 # 검출된 얼굴의 수만큼 반복하여 실행함
 for face in faces:

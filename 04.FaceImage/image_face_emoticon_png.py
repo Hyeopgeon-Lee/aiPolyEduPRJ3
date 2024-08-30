@@ -18,6 +18,8 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_fronta
 # minSize = (100, 100) : 검출할 얼굴의 최소 크기를 지정합니다. 여기서는 너비와 높이가 100x100 픽셀 이상인 얼굴만 검출
 faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(100, 100))
 
+print(f"검출된 얼굴 수: {len(faces)}")  # 검출된 얼굴의 수를 출력
+
 for (x, y, w, h) in faces:
     # 얼굴 영역 크기에 맞게 이모티콘 이미지 크기 조정
     resized_emoticon = cv2.resize(emoticon_image, (w, h), interpolation=cv2.INTER_AREA)
