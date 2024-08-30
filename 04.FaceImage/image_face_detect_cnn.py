@@ -7,11 +7,8 @@ cnn_face_detector = dlib.cnn_face_detection_model_v1("../model/mmod_human_face_d
 # 분석할 이미지 불러오기
 image = cv2.imread("../image/my_face.jpg", cv2.IMREAD_COLOR)  # 지정된 경로에서 이미지를 컬러로 불러옴
 
-# 이미지를 RGB로 변환 (dlib은 RGB 이미지를 필요로 함) / 흑백 및 히스토그램 평활화 필요없음
-rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
 # CNN 모델을 사용해 얼굴 검출 수행
-faces = cnn_face_detector(rgb_image)
+faces = cnn_face_detector(image)
 
 # 검출된 얼굴에 대해 사각형 그리기
 for face in faces:  # 검출된 각 얼굴에 대해 반복 작업을 수행합니다.
