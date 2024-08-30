@@ -1,20 +1,13 @@
 import cv2
 
-# 분석할 이미지 불러오기
-image = cv2.imread("../image/my_face.jpg", cv2.IMREAD_COLOR)
+image = cv2.imread("../image/my_face.jpg", cv2.IMREAD_COLOR)  # 지정된 경로에서 이미지를 컬러로 불러옴
 
-# 분석할 이미지 불러오기
-image_path = "../image/my_face.jpg"  # 이미지 파일 경로를 지정
-image = cv2.imread(image_path, cv2.IMREAD_COLOR)  # 지정된 경로에서 이미지를 컬러로 불러옴
-if image is None:  # 이미지가 정상적으로 불러와지지 않았을 경우를 확인합니다.
-    raise FileNotFoundError(f"이미지를 불러올 수 없습니다: {image_path}")  # 이미지가 없으면 오류를 발생시킴
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # RGB 이미지를 흑백 이미지로 변경
 
-# 이미지를 그레이스케일로 변환 및 히스토그램 평활화 적용
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-gray = cv2.equalizeHist(gray)
+gray = cv2.equalizeHist(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY))  # 흑백 이미지를 히스토그램 평활화를 적용
 
-# 얼굴 검출기를 로드
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt2.xml")
+# 얼굴 검출기를 로드 및 얼굴 검출 수행
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt2.xml")  # 하르 기반 얼굴 검출기를 로드
 
 # 얼굴 검출 수행
 faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=2, minSize=(100, 100))
@@ -28,7 +21,7 @@ if len(faces) > 0:
 
     for (x, y, w, h) in faces:
         # 얼굴 영역 가져오기
-        face_image = image[y:y+h, x:x+w]
+        face_image = image[y:y + h, x:x + w]
 
         # 얼굴 영역을 모자이크 비율에 맞게 축소
         small_face = cv2.resize(face_image, (w // mosaic_rate, h // mosaic_rate))
@@ -37,7 +30,7 @@ if len(faces) > 0:
         mosaic_face = cv2.resize(small_face, (w, h), interpolation=cv2.INTER_NEAREST)
 
         # 원본 이미지에 모자이크 처리된 얼굴 이미지 덮어쓰기
-        image[y:y+h, x:x+w] = mosaic_face
+        image[y:y + h, x:x + w] = mosaic_face
 
     # 모자이크 처리된 이미지 파일 생성 및 표시
     result_path = "../result/mosaic.jpg"

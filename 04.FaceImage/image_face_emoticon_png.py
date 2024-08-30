@@ -1,17 +1,21 @@
 import cv2
 
-# 이미지와 이모티콘 이미지 불러오기
-image = cv2.imread("../image/izone.jpg", cv2.IMREAD_COLOR)
+image = cv2.imread("../image/my_face.jpg", cv2.IMREAD_COLOR)  # 지정된 경로에서 이미지를 컬러로 불러옴
 emoticon_image = cv2.imread("../image/emoticon.png", cv2.IMREAD_COLOR)
 
-# 얼굴 검출을 위한 그레이스케일 이미지 생성 및 히스토그램 평활화
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-gray = cv2.equalizeHist(gray)
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # RGB 이미지를 흑백 이미지로 변경
 
-# 학습된 얼굴 정면 검출기 사용
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt2.xml")
+gray = cv2.equalizeHist(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY))  # 흑백 이미지를 히스토그램 평활화를 적용
 
-# 얼굴 검출 수행
+# 얼굴 검출기를 로드 및 얼굴 검출 수행
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt2.xml")  # 하르 기반 얼굴 검출기를 로드
+
+# 얼굴 검출
+# gray : 히스토그램 변환된 이미지에서 얼굴을 검출합니다.
+# scaleFactor = 1.1 : 이미지 크기를 피라미드 방식으로 줄여가면서 얼굴을 검출합니다. 1.1은 10%씩 이미지 크기를 줄이는 것을 의미
+# minNeighbors = 5 : 검출된 얼굴 영역의 이웃 수를 지정합니다. 이 값이 클수록 더 엄격하게 얼굴을 검출 수행
+#                    즉, 더 많은 이웃을 가진 후보군만 최종 얼굴로 판단
+# minSize = (100, 100) : 검출할 얼굴의 최소 크기를 지정합니다. 여기서는 너비와 높이가 100x100 픽셀 이상인 얼굴만 검출
 faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(100, 100))
 
 # 얼굴이 검출되었다면 이모티콘을 얼굴에 적용
@@ -31,10 +35,10 @@ if len(faces) > 0:
         emoticon_fg = cv2.bitwise_and(resized_emoticon, resized_emoticon, mask=mask)
 
         # 원본 이미지에서 얼굴 부분만 추출
-        face_bg = cv2.bitwise_and(image[y:y+h, x:x+w], image[y:y+h, x:x+w], mask=mask_inv)
+        face_bg = cv2.bitwise_and(image[y:y + h, x:x + w], image[y:y + h, x:x + w], mask=mask_inv)
 
         # 얼굴 부분에 이모티콘 합성
-        image[y:y+h, x:x+w] = cv2.add(face_bg, emoticon_fg)
+        image[y:y + h, x:x + w] = cv2.add(face_bg, emoticon_fg)
 
     # 이모티콘 처리된 이미지 저장 및 표시
     result_path = "../result/emoticon_result.jpg"

@@ -1,20 +1,13 @@
-# 설치한 OpenCV 패키지 불러오기
 import cv2
 
-# 분석할 이미지 불러오기
-image_path = "../image/my_face.jpg"  # 이미지 파일 경로를 지정
-image = cv2.imread(image_path, cv2.IMREAD_COLOR)  # 지정된 경로에서 이미지를 컬러로 불러옴
-if image is None:  # 이미지가 정상적으로 불러와지지 않았을 경우를 확인합니다.
-    raise FileNotFoundError(f"이미지를 불러올 수 없습니다: {image_path}")  # 이미지가 없으면 오류를 발생시킴
+image = cv2.imread("../image/my_face.jpg", cv2.IMREAD_COLOR)  # 지정된 경로에서 이미지를 컬러로 불러옴
 
-# 흑백사진으로 변경
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # RGB 이미지를 흑백 이미지로 변경
 
-# 변환한 흑백사진으로부터 히스토그램 평활화
-gray = cv2.equalizeHist(gray)
+gray = cv2.equalizeHist(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY))  # 흑백 이미지를 히스토그램 평활화를 적용
 
-# 학습된 얼굴 정면검출기 사용하기(OpenCV에 존재하는 파일)
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt2.xml")
+# 얼굴 검출기를 로드 및 얼굴 검출 수행
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_alt2.xml")  # 하르 기반 얼굴 검출기를 로드
 
 # 얼굴 검출
 # gray : 히스토그램 변환된 이미지에서 얼굴을 검출합니다.
