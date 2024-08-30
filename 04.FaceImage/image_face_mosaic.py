@@ -15,30 +15,25 @@ faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=2, min
 # 검출된 얼굴의 수 출력
 print(f"검출된 얼굴 수: {len(faces)}")
 
-# 얼굴이 검출되었을 때 모자이크 처리
-if len(faces) > 0:
-    mosaic_rate = 30  # 모자이크 비율 설정
+mosaic_rate = 30  # 모자이크 비율 설정
 
-    for (x, y, w, h) in faces:
-        # 얼굴 영역 가져오기
-        face_image = image[y:y + h, x:x + w]
+for (x, y, w, h) in faces:
+    # 얼굴 영역 가져오기
+    face_image = image[y:y + h, x:x + w]
 
-        # 얼굴 영역을 모자이크 비율에 맞게 축소
-        small_face = cv2.resize(face_image, (w // mosaic_rate, h // mosaic_rate))
+    # 얼굴 영역을 모자이크 비율에 맞게 축소
+    small_face = cv2.resize(face_image, (w // mosaic_rate, h // mosaic_rate))
 
-        # 축소된 이미지를 다시 원래 크기로 확대
-        mosaic_face = cv2.resize(small_face, (w, h), interpolation=cv2.INTER_NEAREST)
+    # 축소된 이미지를 다시 원래 크기로 확대
+    mosaic_face = cv2.resize(small_face, (w, h), interpolation=cv2.INTER_NEAREST)
 
-        # 원본 이미지에 모자이크 처리된 얼굴 이미지 덮어쓰기
-        image[y:y + h, x:x + w] = mosaic_face
+    # 원본 이미지에 모자이크 처리된 얼굴 이미지 덮어쓰기
+    image[y:y + h, x:x + w] = mosaic_face
 
-    # 모자이크 처리된 이미지 파일 생성 및 표시
-    result_path = "../result/mosaic.jpg"
-    cv2.imwrite(result_path, image)
-    cv2.imshow("Mosaic Image", image)
-
-else:
-    print("얼굴을 검출할 수 없습니다.")
+# 모자이크 처리된 이미지 파일 생성 및 표시
+result_path = "../result/mosaic.jpg"
+cv2.imwrite(result_path, image)
+cv2.imshow("Mosaic Image", image)
 
 # 입력 대기 (결과 창이 바로 닫히지 않도록 설정)
 cv2.waitKey(0)

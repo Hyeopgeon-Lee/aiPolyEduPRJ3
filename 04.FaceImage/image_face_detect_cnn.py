@@ -5,7 +5,7 @@ import dlib  # Dlib 라이브러리
 cnn_face_detector = dlib.cnn_face_detection_model_v1("../model/mmod_human_face_detector.dat")
 
 # 분석할 이미지 불러오기
-image = cv2.imread("../image/my_face.jpg", cv2.IMREAD_COLOR)  # 지정된 경로에서 이미지를 컬러로 불러옴
+image = cv2.imread("../image/izone.jpg", cv2.IMREAD_COLOR)  # 지정된 경로에서 이미지를 컬러로 불러옴
 
 # CNN 모델을 사용해 얼굴 검출 수행
 faces = cnn_face_detector(image)
