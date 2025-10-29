@@ -61,7 +61,7 @@ while True:
     cv2.imshow("Webcam - Gender and Age Detection", frame)
 
     # ESC 키를 누르면 루프 종료
-    if cv2.waitKey(1) & 0xFF == 27:
+    if cv2.waitKey(1) > 0:
         break
 
 # 웹캠 해제
