@@ -27,3 +27,4 @@ while True:
 # 웹캠 종료 및 창 닫기
 cap.release()
 cv2.destroyAllWindows()
+
